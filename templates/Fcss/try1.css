@@ -1,0 +1,130 @@
+header{
+    width:1500px;
+    margin:0 auto;
+    height:100px;
+    background-color:rgb(117, 234, 59);
+}
+h1{
+    font-size: 50px;
+    text-align: center;
+}
+div#show{
+    width:1500px;
+    margin-top: 5px;
+    height:825px;
+    background-color:rgb(204, 210, 201);
+}
+div.Dfireender{
+    width:375px;
+    margin: 10px;
+    height:800px;
+    background-color:rgb(242, 149, 42);
+    float: left;
+    border-radius: 10px;
+}
+div.Dfeeler{
+    width:575px;
+    margin: 10px;
+    height:800px;
+    background-color:rgb(55, 84, 248);
+    float: left;
+    border-radius: 10px;
+}
+div.None{
+    width:475px;
+    margin: 10px;
+    height:800px;
+    background-color:rgb(250, 70, 214);
+    float: left;
+    border-radius: 10px;
+}
+div.info{
+    width:450px;
+    margin: 5px auto;
+    height:200px;
+    background-color:rgb(181, 250, 181);
+    float: top;
+    border-radius: 10px;
+}
+div.op{
+    width:450px;
+    margin: 5px auto;
+    height:500px;
+    background-color:rgb(157, 203, 252);
+    float: top;
+    border-radius: 10px;
+}
+p#itemtitle{
+    font-size: 25px;
+    text-align: center;
+    margin-right: 25px;
+}
+div.fireender{
+    width:350px;
+    margin: 5px auto;
+    height:90px;
+    background-color:rgb(219, 224, 80);
+    float: top;
+    border-radius: 10px;
+}
+div.feeler{
+    width:550px;
+    margin: 5px auto;
+    height:120px;
+    background-color:rgb(84, 209, 215);
+    float: top;
+    border-radius: 10px;
+}
+
+p[extra = 'highlight']{
+    background: rgb(255, 128, 181);
+}
+
+input[type='checkbox'].switch{
+outline: none;
+appearance: none;
+-webkit-appearance: none;
+-moz-appearance: none;
+position: relative;
+width: 50px;
+height: 25px;
+background: #ccc;
+border-radius: 20px;
+transition: border-color .3s, background-color .3s;
+margin-top:10px;
+}
+
+input[type='checkbox'].switch::after {
+content: '';
+display: inline-block;
+width: 1rem;
+height:1rem;
+border-radius: 50%;
+background: #fff;
+box-shadow: 0, 0, 2px, #999;
+transition:.4s;
+top: 2px;
+position: absolute;
+left: 2px;
+}
+
+input[type='checkbox'].switch:checked {
+background: rgb(19, 206, 102);
+}
+/* 当input[type=checkbox]被选中时：伪元素显示下面样式 位置发生变化 */
+input[type='checkbox'].switch:checked::after {
+content: '';
+position: absolute;
+left: 55%;
+top: 2px;
+}
+
+p.pinline{
+display: inline;
+}
+
+button{
+    margin: 10px auto;
+    height: 40px;
+    width: 100px;
+}
