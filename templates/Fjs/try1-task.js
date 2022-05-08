@@ -7,6 +7,7 @@ var ini_xf = {
     numJB : 0,
     numGZ : 0,
     shutdown : 0,
+    active_port: 5000
 }
 var xf = ini_xf;
 
@@ -19,7 +20,7 @@ var feelerValues = {
 
 //配置项
 var config={
-    interval:5000,//隔几天执行一次
+    interval:5000,
     runNow:false//是否立即执行
 };
 
@@ -58,9 +59,40 @@ function sendInfo(){
     console.log("开始发送");
     info = {};
     info.fes = getFEdata();
+    info.fs = getFeelerData();
+    info.fq = getFQdata();
 
-    console.log(info);
+    headers = {
+        name : 'xf_machine',
+        data : JSON.stringify(info)
+    }
+    console.log(headers);
+    
+    fetch('http://127.0.0.1:' + xf.active_port + '/msg_srer', {
+        method: 'post',
+        headers: headers,
+    }).then(response => {
+        console.log(response);
+    });
+    // const xhr = new XMLHttpRequest();
+
+    // xhr.open('POST', 'http://127.0.0.1:' + xf.active_port + '/msg_srer');
+
+    // xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    // xhr.setRequestHeader('name', 'xf_machine');
+
+    // xhr.send(JSON.stringify(info));
+    // xhr.onreadystatechange = function(){
+    //     if(xhr.readyState === 4){
+    //         if(xhr.status >= 200 && xhr.status < 300){
+    //             console.log(xhr.response);
+    //         }
+    //     }
+    // }
     //FE_changeAll();
+    
+
+
     console.log("完成发送");
 }
 
@@ -73,10 +105,9 @@ function getFEdata(){
         let fe = {};
         //fe.name = 'test';
         //fe.value = i;
-        obj = document.getElementById('FE' + (i + 1));
-        fe.id = obj.innerHTML;
-        obj = document.getElementById('SFE' + (i + 1));
-        fe.work = obj.checked;
+        fe.id = document.getElementById('FE' + (i + 1)).innerHTML;
+        fe.work = document.getElementById('SFE' + (i + 1)).checked;
+        fe.error = document.getElementById('GFE' + (i + 1)).checked;
         //console.log(fe);
         fes.values.push(fe);
     }
@@ -85,6 +116,46 @@ function getFEdata(){
     });*/
     //console.log(fes);
     return fes;
+}
+
+function getFeelerData(){
+    let fs = {}
+    fs.numJB = document.getElementById('numJB').innerHTML;
+    fs.oc ={
+        value : document.getElementById('TFL1').value,
+        error : document.getElementById('GFL1').checked,
+    }  
+    fs.co = {
+        value : document.getElementById('TFL2').value,
+        error : document.getElementById('GFL2').checked,
+    }
+    fs.voc = {
+        value : document.getElementById('TFL3').value,
+        error : document.getElementById('GFL3').checked,
+    }
+    fs.fog = {
+        value : document.getElementById('TFL4').value,
+        error : document.getElementById('GFL4').checked,
+    }
+    //console.log(fs);
+    return fs;
+}
+
+function getFQdata(shutdown = false, start = false){
+    let fq = {}
+    fq.area = document.getElementById('Area').innerHTML;
+    fq.JBlevel = document.getElementById('JBlevel').innerHTML;
+    fq.auto = xf.auto;
+    fq.start = start;
+    fq.shutdown = shutdown;
+    var cnt = 0;
+    for(var i=0; i<xf.FireEnderNumber; i++){
+        if(document.getElementById('SFE' + (i + 1)).checked == true){
+            cnt += 1;
+        }
+    }
+    fq.rain = cnt == 0 ? false : true;
+    return fq;
 }
 
 function onGZchange(){
@@ -105,6 +176,7 @@ function onGZchange(){
 function __init__(){
 
     document.getElementById('Area').innerHTML = xf.area;
+    //document.getElementById('Mid').innerHTML = xf.area;
     document.getElementById('autoCtrl').checked = xf.auto;
 
     document.getElementById('shutdown').onclick = () => {

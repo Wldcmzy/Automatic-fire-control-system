@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style>
+        #result{
+            width: 200px;      
+            height: 100px;
+            border: solid 5px #AA6699;
+        }      
+    </style>
+</head>
+<body>
+    <button>ABC</button>
+    <div id="result"></div>
+
+    <script>
+        const btn = document.getElementsByTagName('button')[0];
+        btn.onclick = function(){
+            console.log('abc!!');
+
+            //实例化XHR对象
+            const xhr = new XMLHttpRequest();
+
+            //初始化
+            xhr.open('POST', 'http://127.0.0.1:5000/test');
+
+            //设置请求头
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.setRequestHeader('name', 'wldcmzy');
+
+            console.log('before post')
+
+            xhr.send('a=123&b=645&c=qwesa');
+            xhr.onreadystatechange = function(){
+                if(xhr.readyState === 4){
+                    console.log('change24');
+                    if(xhr.status >= 200 && xhr.status < 300){
+                        console.log('yes');
+                        console.log(xhr.status);
+                        console.log(xhr.statusText);
+                        console.log(xhr.getAllResponseHeaders());
+                        console.log(xhr.response);
+                        result.innerHTML = xhr.response;
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>
