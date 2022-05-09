@@ -5,6 +5,7 @@ class DataFormer:
     _ReportError_func = '__DataFormer_report_func_error___@_'
     _ReportError_unkn = '__DataFormer_report_unkn_error___@_'
     _ReportError_crce = '__DataFormer_report_crce_error___@_'
+    _ReportError_dis_crce = '__DataFormer_report_dis_crce_error___@_'
     _dicMch2Num = {'oc' : 1, 'co' : 2, 'voc' : 3, 'fog' : 4, 'fireEnder' : 5}
     _dicNum2Mch = {1 : 'oc', 2 : 'co', 3 : 'voc', 4 : 'fog', 5 : 'fireEnder'}
     _dicMtype2Chr = {'Light' : chr(0x00) + chr(0x00), 'Normal' : chr(0x00) + chr(0x01)}
@@ -42,8 +43,25 @@ class DataFormer:
     def setDic(self, dic):
         self.dic = dic
 
-    def parseReplay(self):
-        pass
+    def parseReplay(self, data):
+        crc = ord(data[-2])
+        crc_new = self.crc8(data[ : -2] + data[-1])
+        if crc != crc_new:
+            return DataFormer._ReportError_crce
+        else:
+            Fcode = ord(data[5])
+            err = ord(data[6])
+            if err == 0x7f:
+                print('ok')
+                errType = ord(data[7])
+                print(errType, err, Fcode)
+                if errType == 0x11:
+                    print(1)
+                    return DataFormer._ReportError_func
+                else:
+                    print(2)
+                    return DataFormer._ReportError_dis_crce
+        return Fcode
 
     def parseReport(self, data):
         ret = DataFormer._ReportError_unkn
@@ -53,19 +71,15 @@ class DataFormer:
         head = data[ : 2]
         tail = data[-1]
         leng = self.SBit16toNum(data[2 : 4])
-        print('Fcode : ' ,hex(Fcode))
+        #print('Fcode : ' ,hex(Fcode))
         if crc_now != crc:
-            print(33)
             return DataFormer._ReportError_crce
         elif Fcode not in DataFormer._Fcodes:
-            print(22)
             return DataFormer._ReportError_func
         elif head != 'QN' or tail != 'E' or leng != len(data):
-            print(11)
-            print(head, tail, leng, len(data))
+            #print(head, tail, leng, len(data))
             return DataFormer._ReportError_unkn
         else:
-            print('44')
             info = data[8 : -2]
             if Fcode == 0x60:
                 ret = self.parseReport01(info)
@@ -78,8 +92,18 @@ class DataFormer:
             elif Fcode == 0xa0:
                 ret = self.parseReport05(info)
         return ret
-    def formReplay(self):
-        pass
+
+    def formReplay(self, Fcode, id, err, val):
+        ret = 'QN'
+        ret += chr(0) + chr(9)
+        ret += chr(id)
+        ret += chr(Fcode)
+        ret += chr(0x7f) if err == True else chr(Fcode)
+        ret += chr(0) if err == False else (chr(0x11) if val == 1 else chr(0xe0))
+        ret += 'E'
+        crc = self.crc8(ret)
+        ret = ret[ : -1] + chr(crc) + ret[-1]
+        return ret
 
     def formReport(self):
         lst = [
