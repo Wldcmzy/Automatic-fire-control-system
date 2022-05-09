@@ -1,0 +1,17 @@
+Host: 127.0.0.1:5000
+Connection: keep-alive
+Content-Length: 0
+Sec-Ch-Ua: " Not A;Brand";v="99", "Chromium";v="101", "Microsoft Edge";v="101"
+Data: {"fes":{"number":4,"values":[{"id":"101","work":false,"error":true},{"id":"102","work":false,"error":true},{"id":"103","work":false,"error":true},{"id":"104","work":false,"error":false}]},"fs":{"numJB":"0","FeelerNumber":"4","oc":{"id":"201","value":"25","error":true},"co":{"id":"202","value":"0.1","error":false},"voc":{"id":"203","value":"20","error":false},"fog":{"id":"204","value":"0.01","error":true}},"fq":{"area":"1","JBlevel":"0","Mid":"1","Mtype":"Light","auto":true,"start":false,"shutdown":false,"rain":false,"startRain":false}}
+Name: xf_machine
+Sec-Ch-Ua-Mobile: ?0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36 Edg/101.0.1210.39
+Sec-Ch-Ua-Platform: "Windows"
+Accept: */*
+Origin: null
+Sec-Fetch-Site: cross-site
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Accept-Encoding: gzip, deflate, br
+Accept-Language: zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6
+

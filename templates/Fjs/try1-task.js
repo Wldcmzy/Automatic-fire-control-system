@@ -7,7 +7,9 @@ var ini_xf = {
     numJB : 0,
     numGZ : 0,
     shutdown : 0,
-    active_port: 5000
+    active_port: 5000,
+    machine_type: 'Light',
+    lv: 0
 }
 var xf = ini_xf;
 
@@ -52,21 +54,22 @@ function timerTask(config){
      },doRunTime);
  
 }
+
  
 //清空日志逻辑
-function sendInfo(){
+function sendInfo(shutdown = false, start = false, startRain = false){
     //清空web运行程序的日志
     console.log("开始发送");
     info = {};
     info.fes = getFEdata();
     info.fs = getFeelerData();
-    info.fq = getFQdata();
-
+    info.fq = getFQdata(shutdown = shutdown, start = start, startRain = startRain);
+    console.log('startRain? : ' + startRain + 'shd ' + shutdown + 'st ' + start);
     headers = {
         name : 'xf_machine',
         data : JSON.stringify(info)
     }
-    console.log(headers);
+    console.log(info);
     
     fetch('http://127.0.0.1:' + xf.active_port + '/msg_srer', {
         method: 'post',
@@ -121,19 +124,24 @@ function getFEdata(){
 function getFeelerData(){
     let fs = {}
     fs.numJB = document.getElementById('numJB').innerHTML;
+    fs.FeelerNumber= '' + xf.FeelerNumber
     fs.oc ={
+        id : document.getElementById('FL1').innerHTML,
         value : document.getElementById('TFL1').value,
         error : document.getElementById('GFL1').checked,
     }  
     fs.co = {
+        id : document.getElementById('FL2').innerHTML,
         value : document.getElementById('TFL2').value,
         error : document.getElementById('GFL2').checked,
     }
     fs.voc = {
+        id : document.getElementById('FL3').innerHTML,
         value : document.getElementById('TFL3').value,
         error : document.getElementById('GFL3').checked,
     }
     fs.fog = {
+        id : document.getElementById('FL4').innerHTML,
         value : document.getElementById('TFL4').value,
         error : document.getElementById('GFL4').checked,
     }
@@ -141,10 +149,12 @@ function getFeelerData(){
     return fs;
 }
 
-function getFQdata(shutdown = false, start = false){
+function getFQdata(shutdown = false, start = false, startRain = false){
     let fq = {}
     fq.area = document.getElementById('Area').innerHTML;
     fq.JBlevel = document.getElementById('JBlevel').innerHTML;
+    fq.Mid = document.getElementById('Mid').innerHTML;
+    fq.Mtype = document.getElementById('Mtype').innerHTML;
     fq.auto = xf.auto;
     fq.start = start;
     fq.shutdown = shutdown;
@@ -155,6 +165,7 @@ function getFQdata(shutdown = false, start = false){
         }
     }
     fq.rain = cnt == 0 ? false : true;
+    fq.startRain = startRain;
     return fq;
 }
 
@@ -176,18 +187,25 @@ function onGZchange(){
 function __init__(){
 
     document.getElementById('Area').innerHTML = xf.area;
-    //document.getElementById('Mid').innerHTML = xf.area;
+    document.getElementById('Mid').innerHTML = xf.area;
+    document.getElementById('Mtype').innerHTML = xf.machine_type;
     document.getElementById('autoCtrl').checked = xf.auto;
 
     document.getElementById('shutdown').onclick = () => {
-        FE_changeAll(0);
-        xf.shutdown = true;
-        document.getElementById('working').innerHTML = '否'
+        if(xf.shutdown == false) {
+            FE_changeAll(0);
+            sendInfo(shutdown = true, start = false)
+            xf.shutdown = true;
+            document.getElementById('working').innerHTML = '否'
+        }
     }
     document.getElementById('start').onclick = () => {
-        xf.shutdown = false;
-        setJBlevel();
-        document.getElementById('working').innerHTML = '是'
+        if(xf.shutdown == true) {
+            xf.shutdown = false;
+            setJBlevel(true);
+            sendInfo(shutdown = false, start = true);
+            document.getElementById('working').innerHTML = '是'
+        }
     }
 
     for(var i=0; i<xf.FeelerNumber; i++){
@@ -278,6 +296,7 @@ function __init__(){
     document.getElementById('rain').onclick = () => {
         if(xf.auto == false){
             FE_changeAll(1);
+            sendInfo(false, false, startRain = true);
         }
     }
 
@@ -316,7 +335,12 @@ function setJBlevel(){
     document.getElementById('JBlevel').innerHTML = lv;
     if(xf.auto == true){
         FE_changeAll(lv >= 3 ? 1 : 0);
+        if(xf.lv < 3 && lv >= 3){
+            console.log('in setJBlevel start-rain');
+            sendInfo(false, false, startRain = true);
+        }
     }
+    xf.lv = lv;
 }
 
 function FE_changeAll(way = 2){

@@ -10,7 +10,9 @@ def msg_srer():
     if request.method in ['GET', 'POST']:
         res = make_response('ok')
         res.status = '200'
-        print('headers : ' , request.headers)
+        #print('headers : ' , request.headers)
+        with open('asdf.txt', 'w') as f:
+            f.write(str(request.headers))
         
         #res.headers['Access-Control-Allow-Origin'] = '*'
         #res.headers['Access-Control-Allow-Headers'] = '*'
