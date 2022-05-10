@@ -15,7 +15,7 @@ df = dataformer.DataFormer()
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
 lastData = ''
-erridx = []
+rep_type_num = 5
 
 
 @app.route('//msg_srer', methods = ['GET', 'POST'])
@@ -40,13 +40,33 @@ def send(data, idx = [0, 1, 2, 3, 4]):
         sr.send(lst[i], targetAddr)
 
 def reSend():
+    erridx = []
     while True:
         data = sr.getData()
         if data != None:
-            data = data[0]
-            for each in data:
-                print(hex(ord(each)), end = '')
-            print()
+            #print('接收到数据', end = ' >>> ')
+            print('message recived', end = ' >>> ')
+            data = df.parseReplay(data[0])
+            if data == dataformer.DataFormer._ReportError_crce: # 数据未能解析
+                #print('数传输异常: receive')
+                print('CRC error: receive')
+                erridx = list(range(1, rep_type_num + 1))
+            else:
+                Fcode, data = data
+                if data ==  dataformer.DataFormer._ReportError_dis_crce:
+                    #print('数传输异常: send')
+                    print('CRC error: send')
+                    erridx = list(range(1, rep_type_num + 1))
+                elif data == dataformer.DataFormer._ReportError_func:
+                    #print('功能码异常: ' + str(hex(Fcode)))
+                    print('Fcode error')
+                    if Fcode not in erridx :
+                        erridx.append(Fcode)
+                else:
+                    print('Normal: ' + str(hex(Fcode)))
+            if len(erridx) != 0:
+                send(lastData, erridx)
+                erridx = []
 
 t = threading.Thread(target = reSend, name = 'resend')
 t.start()

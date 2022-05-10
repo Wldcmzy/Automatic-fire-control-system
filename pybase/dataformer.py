@@ -58,10 +58,10 @@ class DataFormer:
                 errType = ord(data[7])
                 print(errType, err, Fcode)
                 if errType == 0x11:
-                    return DataFormer._ReportError_func
+                    return (Fcode, DataFormer._ReportError_func)
                 else:
-                    return DataFormer._ReportError_dis_crce
-        return Fcode
+                    return (Fcode, DataFormer._ReportError_dis_crce)
+        return (Fcode, None)
 
     def parseReport(self, data):
         ret = DataFormer._ReportError_unkn

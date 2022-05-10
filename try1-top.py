@@ -12,7 +12,7 @@ while True:
         data, address = data
         data = df.parseReport(data)
         data, dic = data
-        print('接收到消息 Fcode:%d ID:%d' % (dic['Fcode'], dic['id']))
+        print('接收到消息 Fcode:%#X ID:%d' % (dic['Fcode'], dic['id']))
         if data == dataformer.DataFormer._ReportError_unkn:
             data = df.formReplay(dic['Fcode'], dic['id'], True, dataformer.DataFormer._dicErr2Num['unkn'])
             print('消息接受出错:', dataformer.DataFormer._ReportError_unkn)
@@ -28,6 +28,7 @@ while True:
         else:
             # sql
             #
+            print(data)
             print('消息正确接受,并存入数据库...')
             data = df.formReplay(dic['Fcode'], dic['id'], False, 0)
 

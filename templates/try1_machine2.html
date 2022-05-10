@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"> 
+    <title>消防区信息</title>
+    <link rel="stylesheet" type="text/css" href="Fcss/try1.css">
+</head>
+
+<body>
+    <header>
+        <h1>消防区模拟器</h1>
+    </header>
+    <div id="show">
+        <div class="Dfeeler">
+            <p id="itemtitle">探测器</p>
+            <div class="feeler">
+                代号 : <p class="pinline" id="FL1">201</p>
+                &nbsp;&nbsp;
+                类型 : <p class="pinline" id="TPFL1" extra="highlight">温度</p>
+                &nbsp;&nbsp;
+                故障:
+                <input type="checkbox" class="switch" id="GFL1">
+                <br>
+                指标: <input type="test" id="TFL1" value="25"> 摄氏度(阈值:50摄氏度)
+                <br>
+                指标状态: <p class="pinline" id="SFL1">正常</p>
+                <br>
+                注解: 无
+            </div>
+            <div class="feeler">
+                代号 : <p class="pinline" id="FL2">202</p>
+                &nbsp;&nbsp;
+                类型 : <p class="pinline" id="TPFL2" extra="highlight">CO</p>
+                &nbsp;&nbsp;
+                故障:
+                <input type="checkbox" class="switch" id="GFL2">
+                <br>
+                指标: <input type="test" id="TFL2" value="0.1"> % (阈值:2%)
+                <br>
+                指标状态: <p class="pinline" id="SFL2">正常</p>
+                <br>
+                注解: 空气中CO浓度超过5%会引起中毒 这里取2/5
+            </div>
+            <div class="feeler">
+                代号 : <p class="pinline" id="FL3">203</p>
+                &nbsp;&nbsp;
+                类型 : <p class="pinline" id="TPFL3" extra="highlight">VOC</p>
+                &nbsp;&nbsp;
+                故障:
+                <input type="checkbox" class="switch" id="GFL3">
+                <br>
+                指标: <input type="test" id="TFL3" value="20"> g/L (阈值:160g/L)
+                <br>
+                指标状态: <p class="pinline" id="SFL3">正常</p>
+                <br>
+                注解: VOL标准不得高于200g/L 这里取4/5
+            </div>
+            <div class="feeler">
+                代号 : <p class="pinline" id="FL4">204</p>
+                &nbsp;&nbsp;
+                类型 : <p class="pinline" id="TPFL4" extra="highlight">烟雾</p>
+                &nbsp;&nbsp;
+                故障:
+                <input type="checkbox" class="switch" id="GFL4">
+                <br>
+                指标: <input type="test" id="TFL4" value="0.01"> mg/m^3 (阈值:0.08mg/m^3)
+                <br>
+                指标状态: <p class="pinline" id="SFL4">正常</p>
+                <br>
+                注解: VOL标准不得高于200g/L 这里取4/5
+                
+            </div>
+        </div>
+        <div class="Dfireender">
+            <p id="itemtitle">灭火器</p>
+            <div class="fireender">
+                代号 : <p class="pinline" id="FE1">101</p> <br>
+                开关
+                <input type="checkbox" class="switch" id="SFE1">
+                故障
+                <input type="checkbox" class="switch" id="GFE1">
+            </div>
+            <div class="fireender">
+                代号 : <p class="pinline" id="FE2">102</p> <br>
+                开关
+                <input type="checkbox" class="switch" id="SFE2">
+                故障
+                <input type="checkbox" class="switch" id="GFE2">
+            </div>
+            <div class="fireender">
+                代号 : <p class="pinline" id="FE3">103</p> <br>
+                开关
+                <input type="checkbox" class="switch" id="SFE3">
+                故障
+                <input type="checkbox" class="switch" id="GFE3">
+            </div>
+            <div class="fireender">
+                代号 : <p class="pinline" id="FE4">104</p> <br>
+                开关 
+                <input type="checkbox" class="switch" id="SFE4">
+                故障
+                <input type="checkbox" class="switch" id="GFE4">
+            </div>
+            
+        </div>
+        <div class="None">
+            <p id="itemtitle">信息与操控</p>
+            <div class="info">
+                消防区代号: <p class="pinline" id="Area"></p>
+                 <br>
+                设备类型: <p class="pinline" id="Mtype"></p>
+                &nbsp;&nbsp;
+                设备ID: <p class="pinline" id="Mid"></p>
+                <br>
+                警报等级: <p class="pinline" id="JBlevel">0</p>
+                &nbsp;&nbsp;
+                故障个数：<p class="pinline" id="numGZ">0</p>
+                &nbsp;&nbsp;
+                警报个数: <p class="pinline" id="numJB">0</p>
+                <br>
+                消防主机是否工作: <p class="pinline" id="working">是</p>
+            </div>
+            <div class="op">
+                自动控制
+                <input type="checkbox" class="switch", id="autoCtrl">
+                <br>
+                <button id = 'rain'>启动喷洒</button> 
+                &nbsp;&nbsp;
+                <button id = 'notrain'>结束喷洒</button> 
+                <br>
+                <button id = 'shutdown'>机器急停</button> 
+                &nbsp;&nbsp;
+                <button id = 'start'>机器启动</button> 
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="Fjs/try1-task_machine2.js"></script>
+</body>
+</html>
