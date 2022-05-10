@@ -1,0 +1,67 @@
+create table sys01 (
+	revID varchar(25),
+	AREA int,
+	JBnum int,
+	GZnum int,
+	Fnum int,
+	primary key(revID)
+);
+
+create table gz02(
+	revID varchar(25),
+	AREA int,
+	type varchar(10),
+	id int,
+	GZcode int,
+	primary key(revID)
+);
+
+create table fq03(
+	revID varchar(25),
+	AREA int,
+	JBlevel int,
+	GZ int,
+	auto int,
+	notAuto int,
+	start int,
+	shutdown int,
+	rain int ,
+	startRain int,
+	primary key(revID)
+);
+
+create table f04(
+	revID varchar(25),
+	AREA int,
+	Mtype varchar(10),
+	Mid int,
+	JBlevel int,
+	oc float,
+	co float,
+	voc float,
+	fog float,
+	primary key(revID)
+);
+
+create table fe05(
+	revID varchar(25),
+	AREA int,
+	id int,
+	status int,
+	primary key(revID)
+);
+
+
+grant all privileges on table sys01 to ks1@'%';
+grant all privileges on table gz02 to ks1@'%';
+grant all privileges on table fq03 to ks1@'%';
+grant all privileges on table f04 to ks1@'%';
+grant all privileges on table fe05 to ks1@'%';
+
+
+
+drop table sys01;
+drop table gz02;
+drop table fq03;
+drop table f04;
+drop table fe05;

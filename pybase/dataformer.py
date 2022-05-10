@@ -403,7 +403,7 @@ class DataFormer:
                 dic = {}
                 dic['area'] = ord(data[now])
                 now += 1
-                dic['type'] = ord(data[now])
+                dic['type'] = DataFormer._dicNum2Mch[ord(data[now])]
                 now += 1
                 dic['id'] = ord(data[now])
                 now += 1

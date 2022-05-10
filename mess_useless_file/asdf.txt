@@ -39,3 +39,23 @@ Data: {"fes":{"number":4,"values":[{"id":"101","work":false,"error":false},{"id"
 
 
 
+接收到消息 Fcode:0X60 ID:5
+{'length': 4, 'area': 5, 'JBnum': 2, 'GZnum': 1, 'FeelerNum': 4}
+消息正确接受,并存入数据库...
+接收到消息 Fcode:0X70 ID:5
+{'length': 1, 'values': [{'area': 5, 'type': 2, 'id': 202, 'GZcode': 1}]}
+消息正确接受,并存入数据库...
+接收到消息 Fcode:0X80 ID:5
+{'length': 12, 'area': 5, 'JBlevel': 3, 'GZ': 1, 'NOTauto': 0, 
+'auto': 1, 'shutdown': 0, 'start': 0, 'startRain': 0, 'rain': 1}
+消息正确接受,并存入数据库...
+接收到消息 Fcode:0X90 ID:5
+{'length': 12, 'area': 5, 'Mtype': 'Normal', 'Mid': 5, 'JBlevel': 3, 
+'oc': 48.104, 'co': 34.256, 'voc': 20.0, 'fog': 0.01}
+消息正确接受,并存入数据库...
+接收到消息 Fcode:0XA0 ID:5
+[{'area': 5, 'id': 101, 'work': 1}, {'area': 5, 'id': 102, 'work': 1}, 
+{'area': 5, 'id': 103, 'work': 1}, {'area': 5, 'id': 104, 'work': 1}]
+
+
+
