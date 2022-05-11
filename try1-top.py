@@ -29,7 +29,6 @@ def form_revID(const_time = None):
     ret = v2t(tm[0], 4)
     for each in tm[1 : 6]: ret += v2t(each)
     ret += str(IterNum)
-    print('revID :', ret)
     return ret
 
 
@@ -41,7 +40,7 @@ while True:
         data, address = data
         data = df.parseReport(data)
         data, dic = data
-        print('接收到消息 Fcode:%#X ID:%d' % (dic['Fcode'], dic['id']))
+        print('接收到消息 Fcode:%#X ID:%d Time:%d' % (dic['Fcode'], dic['id'], dic['time']))
         if data == dataformer.DataFormer._ReportError_unkn:
             data = df.formReplay(dic['Fcode'], dic['id'], True, dataformer.DataFormer._dicErr2Num['unkn'])
             print('消息接受出错:', dataformer.DataFormer._ReportError_unkn)
@@ -55,20 +54,21 @@ while True:
             data = df.formReplay(dic['Fcode'], dic['id'], True, dataformer.DataFormer._dicErr2Num['func'])
             print('消息接受出错:', dataformer.DataFormer._ReportError_func)
         else:
+            tm = dic['time']
             if dic['Fcode'] == 0xa0:
                 t = time.localtime()[ : 6]
                 for each in data:
-                    op.add_fe05(form_revID(t), each)
+                    op.add_fe05(tm, form_revID(t), each)
             elif dic['Fcode'] == 0x90:
-                op.add_f04(form_revID(), data)
+                op.add_f04(tm, form_revID(), data)
             elif dic['Fcode'] == 0x80:
-                op.add_fq03(form_revID(), data)
+                op.add_fq03(tm, form_revID(), data)
             elif dic['Fcode'] == 0x70:
                 t = time.localtime()[ : 6]
                 for each in data['values']:
-                    op.add_gz02(form_revID(t), each)
+                    op.add_gz02(tm, form_revID(t), each)
             elif dic['Fcode'] == 0x60:
-                op.add_sys01(form_revID(), data)
+                op.add_sys01(tm, form_revID(), data)
 
             
             print('消息正确接受,并存入数据库...')

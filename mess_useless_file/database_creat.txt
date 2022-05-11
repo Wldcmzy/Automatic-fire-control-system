@@ -4,6 +4,7 @@ create table sys01 (
 	JBnum int,
 	GZnum int,
 	Fnum int,
+	sendTime long,
 	primary key(revID)
 );
 
@@ -13,6 +14,7 @@ create table gz02(
 	type varchar(10),
 	id int,
 	GZcode int,
+	sendTime long,
 	primary key(revID)
 );
 
@@ -27,6 +29,7 @@ create table fq03(
 	shutdown int,
 	rain int ,
 	startRain int,
+	sendTime long,
 	primary key(revID)
 );
 
@@ -40,6 +43,7 @@ create table f04(
 	co float,
 	voc float,
 	fog float,
+	sendTime long,
 	primary key(revID)
 );
 
@@ -48,6 +52,7 @@ create table fe05(
 	AREA int,
 	id int,
 	status int,
+	sendTime long,
 	primary key(revID)
 );
 

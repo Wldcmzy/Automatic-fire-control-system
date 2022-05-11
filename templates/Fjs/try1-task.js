@@ -99,6 +99,8 @@ function sendInfo(shutdown = false, start = false, startRain = false){
     console.log("完成发送");
 }
 
+
+//获取灭火器信息
 function getFEdata(){
     let fes = {
         number : xf.FireEnderNumber,
@@ -121,6 +123,7 @@ function getFEdata(){
     return fes;
 }
 
+//获取探测器信息
 function getFeelerData(){
     let fs = {}
     fs.numJB = document.getElementById('numJB').innerHTML;
@@ -149,6 +152,8 @@ function getFeelerData(){
     return fs;
 }
 
+
+//获取分区信息
 function getFQdata(shutdown = false, start = false, startRain = false){
     let fq = {}
     fq.area = document.getElementById('Area').innerHTML;
@@ -169,6 +174,7 @@ function getFQdata(shutdown = false, start = false, startRain = false){
     return fq;
 }
 
+//故障按钮触发函数
 function onGZchange(){
     let cnt = 0;
     for(var i=0; i<xf.FireEnderNumber; i++){
@@ -184,6 +190,7 @@ function onGZchange(){
     setGZnum(cnt);
 }
 
+//初始化
 function __init__(){
 
     document.getElementById('Area').innerHTML = xf.area;
@@ -307,18 +314,21 @@ function __init__(){
     }
 }
 
+
+//html设置故障数量
 function setGZnum(num){
     if(xf.shutdown == true) return ;
     document.getElementById('numGZ').innerHTML = num;
 }
 
+//html设置警报数量
 function setJBnum(num){
     if(xf.shutdown == true) return ;
     //config.log(num);
     document.getElementById('numJB').innerHTML = num;
 }
 
-
+//自动判断更新警报等级，并开/关灭火器
 function setJBlevel(){
     if(xf.shutdown == true) return ;
     let lv = 0;
@@ -343,6 +353,7 @@ function setJBlevel(){
     xf.lv = lv;
 }
 
+//开/关 灭火器
 function FE_changeAll(way = 2){
     for(var i=0; i < xf.FireEnderNumber; i ++){
         obj = document.getElementById('SFE' + (i + 1));

@@ -1,4 +1,5 @@
 import json
+import time
 
 class DataFormer:
     _ReportError_read = '__DataFormer_report_read_error___@_'
@@ -21,31 +22,58 @@ class DataFormer:
     def __init__(self):
         self.dic = {}
 
+    # 数字转16位字符串
     def Snum2ChrBit16(self, num):
         num = int(num)
         return chr((num >> 8) & 0xff) + chr(num & 0xff)
 
+    # 浮点数转16位字符串
     #精度保留三位小数
     def Sfloat2ChrBit16(self, num):
         return self.Snum2ChrBit16(float(num) * 1000)
 
+    # 16位字符串转数字
     def SBit16toNum(self, data):
         return (ord(data[0]) << 8) + ord(data[1])
     
+    # 16位字符串转浮点数
     def SBit16toFloat(self, data):
         return self.SBit16toNum(data) / 1000
 
+    # 数字转8位字符串
     def Snum2ChrBit8(self, num):
         return chr(int(num))
     
+    # 8位字符串转数字
     def SBit8toNum(self, data):
         return ord(data)
 
+    # 设置要处理的数据 self.dic
     def setDic(self, dic):
         if type(dic) == str:
             dic = json.loads(dic)
         self.dic = dic
 
+    # 生成发送时间
+    def formTimeS(self):
+        t = time.localtime()[ : 6]
+        tm = t[0]
+        for i in range(1, 6):
+            tm = (tm * 100) + t[i]
+        ret = ''
+        for i in range(6):
+            ret = chr(tm & 0xff) + ret
+            tm >>= 8
+        return ret
+
+    # 解析发送时间
+    def parseTimeS(self, data):
+        ret = 0
+        for each in data:
+            ret = (ret << 8) + ord(each)
+        return ret
+
+    # 解析回复报文
     def parseReplay(self, data):
         crc = ord(data[-2])
         crc_new = self.crc8(data[ : -2] + data[-1])
@@ -63,10 +91,13 @@ class DataFormer:
                     return (Fcode, DataFormer._ReportError_dis_crce)
         return (Fcode, None)
 
+    # 解析上报报文
     def parseReport(self, data):
         ret = DataFormer._ReportError_unkn
+        tm = self.parseTimeS(data[-8 : -2])
         crc = ord(data[-2])
         crc_now = self.crc8(data[ : -2] + data[-1])
+        data = data[ : -7] + data[-1]
         id = ord(data[4])
         Fcode = ord(data[5])
         head = data[ : 2]
@@ -90,20 +121,22 @@ class DataFormer:
                 ret = self.parseReport04(info)
             elif Fcode == 0xa0:
                 ret = self.parseReport05(info)
-        return (ret, {'Fcode' : Fcode, 'id' : id})
+        return (ret, {'Fcode' : Fcode, 'id' : id, 'time' : tm})
 
+    # 生成回复报文
     def formReplay(self, Fcode, id, err, val):
         ret = 'QN'
         ret += chr(0) + chr(9)
         ret += chr(id)
         ret += chr(Fcode)
         ret += chr(0x7f) if err == True else chr(Fcode)
-        ret += chr(0) if err == False else chr(val)
+        ret += chr(0) if err == False else chr(val) 
         ret += 'E'
         crc = self.crc8(ret)
         ret = ret[ : -1] + chr(crc) + ret[-1]
         return ret
 
+    # 生成上报报文
     def formReport(self):
         lst = [
             self.wapperOfFormReport(0x60, self.formReport01()), 
@@ -114,6 +147,7 @@ class DataFormer:
         ]
         return lst
 
+    # crc 返回8bit数字
     def crc8(self, data):
         N = 8
         loc = [8, 2, 1, 0]
@@ -148,6 +182,7 @@ class DataFormer:
 
         return ret
 
+    # 包装一份上报子报文，生成一份上报报文
     def wapperOfFormReport(self, Funcode, txt):
         fq = self.dic['fq']
         assert 'Mid' in fq
@@ -161,6 +196,7 @@ class DataFormer:
         ret += self.Snum2ChrBit8(success) # 读取成功失败情况 1
         ret += chr(0) # 数据格式 1
         ret += txt # 报文 N
+        ret += self.formTimeS()
         ret += 'E' # 结束符  1
         crc = self.crc8(ret)
         ret = ret[ : -1] + chr(crc) + ret[-1] # CRC 1

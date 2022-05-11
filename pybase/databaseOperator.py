@@ -14,33 +14,33 @@ class sqlOperator:
         self.__connection.close()
         self.__cursor.close()
 
-    def add_fe05(self, revID, dic):
+    def add_fe05(self, tm, revID, dic):
         nameT = 'fe05'
-        sql = 'insert into %s values (\'%s\', %d, %d, %d)' % (nameT, revID, dic['area'], dic['id'], dic['work'])
+        sql = 'insert into %s values (\'%s\', %d, %d, %d, %d)' % (nameT, revID, dic['area'], dic['id'], dic['work'], tm)
         self.__cursor.execute(sql)
         self.__connection.commit()
 
-    def add_f04(self, revID, dic):
+    def add_f04(self, tm, revID, dic):
         nameT = 'f04'
-        sql = 'insert into %s values (\'%s\', %d, \'%s\', %d, %d, %f, %f, %f, %f)' % (nameT, revID, dic['area'], dic['Mtype'], dic['Mid'], dic['JBlevel'], dic['oc'], dic['co'], dic['voc'], dic['fog'])
+        sql = 'insert into %s values (\'%s\', %d, \'%s\', %d, %d, %f, %f, %f, %f, %d)' % (nameT, revID, dic['area'], dic['Mtype'], dic['Mid'], dic['JBlevel'], dic['oc'], dic['co'], dic['voc'], dic['fog'], tm)
         self.__cursor.execute(sql)
         self.__connection.commit()
 
-    def add_fq03(self, revID, dic):
+    def add_fq03(self, tm, revID, dic):
         nameT = 'fq03'
-        sql = 'insert into %s values (\'%s\', %d, %d, %d, %d, %d, %d, %d, %d, %d)' % (nameT, revID, dic['area'], dic['JBlevel'], dic['GZ'], dic['auto'], dic['NOTauto'], dic['start'], dic['shutdown'], dic['rain'], dic['startRain'])
+        sql = 'insert into %s values (\'%s\', %d, %d, %d, %d, %d, %d, %d, %d, %d, %d)' % (nameT, revID, dic['area'], dic['JBlevel'], dic['GZ'], dic['auto'], dic['NOTauto'], dic['start'], dic['shutdown'], dic['rain'], dic['startRain'], tm)
         self.__cursor.execute(sql)
         self.__connection.commit()
         
-    def add_gz02(self, revID, dic):
+    def add_gz02(self, tm, revID, dic):
         nameT = 'gz02'
-        sql = 'insert into %s values (\'%s\', %d, \'%s\', %d, %d)' % (nameT, revID, dic['area'], dic['type'], dic['id'], dic['GZcode'])
+        sql = 'insert into %s values (\'%s\', %d, \'%s\', %d, %d, %d)' % (nameT, revID, dic['area'], dic['type'], dic['id'], dic['GZcode'], tm)
         self.__cursor.execute(sql)
         self.__connection.commit()
 
-    def add_sys01(self, revID, dic):
+    def add_sys01(self, tm, revID, dic):
         nameT = 'sys01'
-        sql = 'insert into %s values (\'%s\', %d, %d, %d, %d)' % (nameT, revID, dic['area'], dic['JBnum'], dic['GZnum'], dic['FeelerNum'])
+        sql = 'insert into %s values (\'%s\', %d, %d, %d, %d, %d)' % (nameT, revID, dic['area'], dic['JBnum'], dic['GZnum'], dic['FeelerNum'], tm)
         self.__cursor.execute(sql)
         self.__connection.commit()
         
