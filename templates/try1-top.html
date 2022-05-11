@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8"> 
     <title>分区情况查询</title>
-    <link rel="stylesheet" type="text/css" href="Fcss/try1-top.css">
+    <!-- <link rel="stylesheet" type="text/css" href="Fcss/try1-top.css"> -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'Fcss/try1-top.css') }}">
+    
 </head>
 <body>
     <header>
@@ -21,7 +23,7 @@
             小时:<input type="test" id="hourhigh1" value="00">
             分钟:<input type="test" id="minhigh1" value="00">
             <br>
-            分区号:<input type="test" id="minhigh1" value="00">
+            分区号:<input type="test" id="area1" value="00">
             <button id = "bt1"> 查询 </button>
             <br>
             <div id = 'data'>
@@ -30,17 +32,17 @@
         </div>
         <div class="B">
             开始时间 &nbsp;
-            日期:<input type="test" id="datelow1" value="20220511">
-            小时:<input type="test" id="hourlow1" value="00">
-            分钟:<input type="test" id="minlow1" value="00">
+            日期:<input type="test" id="datelow2" value="20220511">
+            小时:<input type="test" id="hourlow2" value="00">
+            分钟:<input type="test" id="minlow2" value="00">
             <br>
             结束时间 &nbsp;
-            日期:<input type="test" id="datehigh1" value="20220512">
-            小时:<input type="test" id="hourhigh1" value="00">
-            分钟:<input type="test" id="minhigh1" value="00">
+            日期:<input type="test" id="datehigh2" value="20220512">
+            小时:<input type="test" id="hourhigh2" value="00">
+            分钟:<input type="test" id="minhigh2" value="00">
             <br>
-            分区号:<input type="test" id="minhigh1" value="00">
-            <button id = "bt1"> 查询 </button>
+            分区号:<input type="test" id="area2" value="00">
+            <button id = "bt2"> 查询 </button>
             <br>
             <div id = 'data'>
                 <p class = 'zh'><strong>监控面板</strong></p>
@@ -50,17 +52,17 @@
         </div>
         <div class="C">
             开始时间 &nbsp;
-            日期:<input type="test" id="datelow1" value="20220511">
-            小时:<input type="test" id="hourlow1" value="00">
-            分钟:<input type="test" id="minlow1" value="00">
+            日期:<input type="test" id="datelow3" value="20220511">
+            小时:<input type="test" id="hourlow3" value="00">
+            分钟:<input type="test" id="minlow3" value="00">
             <br>
             结束时间 &nbsp;
-            日期:<input type="test" id="datehigh1" value="20220512">
-            小时:<input type="test" id="hourhigh1" value="00">
-            分钟:<input type="test" id="minhigh1" value="00">
+            日期:<input type="test" id="datehigh3" value="20220512">
+            小时:<input type="test" id="hourhigh3" value="00">
+            分钟:<input type="test" id="minhigh3" value="00">
             <br>
-            分区号:<input type="test" id="minhigh1" value="00">
-            <button id = "bt1"> 查询 </button>
+            分区号:<input type="test" id="area3" value="00">
+            <button id = "bt3"> 查询 </button>
             <br>
             <div id = 'data'>
                 <p class = 'zh'><strong>监控面板</strong></p>
@@ -75,5 +77,8 @@
 
     </div>
 
+    <!-- <script type="text/javascript" src="Fjs/try1-top.js"></script> -->
+    
+    <script type="text/javascript" src="{{ url_for('static', filename = 'Fjs/try1-top.js') }}"></script>
 </body>
 </html>

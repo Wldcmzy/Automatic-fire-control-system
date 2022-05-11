@@ -47,7 +47,7 @@ function timerTask(config){
                 setJBnum(xf.numJB);
                 setGZnum(xf.numGZ);
                 sendInfo();
-             }
+            }
  
          },intTime);
  
@@ -328,7 +328,7 @@ function setJBnum(num){
     document.getElementById('numJB').innerHTML = num;
 }
 
-//自动判断更新警报等级，并开/关灭火器
+//自动判断更新警报等级，并开/关
 function setJBlevel(){
     if(xf.shutdown == true) return ;
     let lv = 0;
@@ -353,7 +353,7 @@ function setJBlevel(){
     xf.lv = lv;
 }
 
-//开/关 灭火器
+// 开/关 灭火器
 function FE_changeAll(way = 2){
     for(var i=0; i < xf.FireEnderNumber; i ++){
         obj = document.getElementById('SFE' + (i + 1));

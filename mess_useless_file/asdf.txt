@@ -59,3 +59,31 @@ Data: {"fes":{"number":4,"values":[{"id":"101","work":false,"error":false},{"id"
 
 
 
+
+
+[{'revID': '20220511150915106', 'AREA': 1, 'JBnum': 0, 'GZnum': 0, 
+'Fnum': 4, 'sendTime': '20220511150916'}]
+
+[]
+
+[{'revID': '20220511150915107', 'AREA': 1, 'JBlevel': 0, 
+'GZ': 0, 'auto': 1, 'notAuto': 0, 'start': 0, 'shutdown': 0, 
+'rain': 0, 'startRain': 0, 'sendTime': '20220511150916'}]
+
+[{'revID': '20220511150915108', 'AREA': 1, 'Mtype': 'Light', 
+'Mid': 1, 'JBlevel': 0, 'oc': 25.0, 'co': 0.1, 'voc': 20.0, 
+'fog': 0.01, 'sendTime': '20220511150916'}]
+
+
+
+[{'revID': '20220511150915109', 'AREA': 1, 'id': 101, 
+'status': 0, 'sendTime': '20220511150916'}, 
+
+{'revID': '20220511150915110', 'AREA': 1, 'id': 102, 
+'status': 0, 'sendTime': '20220511150916'}, 
+
+{'revID': '20220511150915111', 'AREA': 1, 'id': 103, 
+'status': 0, 'sendTime': '20220511150916'}, 
+
+{'revID': '20220511150915112', 'AREA': 1, 'id': 104, 
+'status': 0, 'sendTime': '20220511150916'}]
