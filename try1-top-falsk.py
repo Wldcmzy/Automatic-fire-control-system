@@ -1,8 +1,9 @@
 from flask import Flask, request, make_response, render_template, url_for, jsonify
 from flask_cors import CORS
-from importlib_metadata import method_cache
 from pybase import databaseOperator
 import json
+import threading
+
 
 host = '127.0.0.1'
 user = 'ks1'
@@ -13,17 +14,25 @@ db = 'KS1'
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
 
-op = databaseOperator.sqlOperator(host, user, psd, db)
-op.active()
-    
 
 @app.route('/newest', methods = ['POST'])
 def newest():
-    data = request.headers['data']
-    area = int(data)
-    ret = op.select_newest(area)
+    data = json.loads(request.headers['data'])
+    #print(data, type(data))
+    area, id = int(data['area']), int(data['id'])
+    print('query new --', area)
+    
+    op = databaseOperator.sqlOperator(host, user, psd, db)
+    op.active()
+    try :
+        ret = op.select_newest(area)
+    except:
+        ret = dict({'error': 'error, no area:%d maybe.' % area} )
+    op.inactive()
+    ret['id'] = id
     resp = make_response()
     resp.status = 200
+   
     resp.headers['txt'] = 'jsjzhsjSEP' +  json.dumps(ret) + 'jsjzhsjSEP'
     # print(json.dumps(ret))
     #return jsonify(resp)

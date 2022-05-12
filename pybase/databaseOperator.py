@@ -50,6 +50,7 @@ class sqlOperator:
     def select_newest(self, area):
         area = int(area)
         tm = self.select_newest_by_sys01(area)['sendTime']
+        #print('new : ', tm)
         assert tm != None
         return self.select_byTime(area, int(tm))
 
@@ -81,7 +82,9 @@ class sqlOperator:
         sql = 'select * from %s where AREA = %d and sendTime = %d' % (nameT, area, tm)
         cnt = self.__cursor.execute(sql)
         if cnt <= 0 : return []
-        return self.__cursor.fetchall()
+        ret = self.__cursor.fetchall()
+        self.__connection.commit()
+        return ret
 
 # 数据解析
 # def parseData(dic):

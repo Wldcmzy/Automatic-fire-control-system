@@ -28,9 +28,9 @@ class DataFormer:
         return chr((num >> 8) & 0xff) + chr(num & 0xff)
 
     # 浮点数转16位字符串
-    #精度保留三位小数
+    #精度保留2位小数
     def Sfloat2ChrBit16(self, num):
-        return self.Snum2ChrBit16(float(num) * 1000)
+        return self.Snum2ChrBit16(float(num) * 100)
 
     # 16位字符串转数字
     def SBit16toNum(self, data):
@@ -38,7 +38,7 @@ class DataFormer:
     
     # 16位字符串转浮点数
     def SBit16toFloat(self, data):
-        return self.SBit16toNum(data) / 1000
+        return self.SBit16toNum(data) / 100
 
     # 数字转8位字符串
     def Snum2ChrBit8(self, num):
