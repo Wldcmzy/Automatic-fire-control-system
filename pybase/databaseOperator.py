@@ -1,3 +1,4 @@
+from time import time
 import pymysql
 class sqlOperator:
     def __init__(self, host, user, password, database):
@@ -46,6 +47,16 @@ class sqlOperator:
         self.__cursor.execute(sql)
         self.__connection.commit()
     
+    # 获取某区域一段时间内的消息
+    def select_span(self, area, low, high):
+        area = int(area)
+        timelst = self.getTimeSPANby_sys01(area, low, high)
+        #print(timelst)
+        ret = []
+        for each in timelst:
+            ret.append(self.select_byTime(area, int(each['sendTime'])))
+        return ret
+
     # 获取某区域最新消息
     def select_newest(self, area):
         area = int(area)
@@ -72,7 +83,16 @@ class sqlOperator:
         cnt = self.__cursor.execute(sql)
         if cnt <= 0 : return None
         return self.__cursor.fetchall()
-    
+
+    # 获取某区域一段时间内的数据发送时间
+    def getTimeSPANby_sys01(self, area, low, high):
+        nameT = 'sys01'
+        #print(type(area),type(low), type(high))
+        sql = 'select sendTime from %s where AREA = %d and sendTime >= %d and sendTime <= %d' % (nameT, area, low, high)
+        cnt = self.__cursor.execute(sql)
+        if cnt <= 0 : return None
+        return self.__cursor.fetchall()
+
     # 获取某区域最新发送数据的时间
     def select_newest_by_sys01(self, area):
         return self.getTimeLSTby_sys01(area)[0]

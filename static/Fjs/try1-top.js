@@ -6,7 +6,7 @@ config = {
 }
 
 timerTask(config);
-
+__init__();
 function timerTask(config){
     if(config.runNow){
 
@@ -83,7 +83,7 @@ function autowatch(){
     }
 }
 
-function parse_Data(dic){
+function parse_Data(dic, hasbr = true, allowbr = true){
     // console.log(de);
     if(dic.error != null){
         // console.log(dic.error);
@@ -96,10 +96,14 @@ function parse_Data(dic){
     var autostatus = d3['auto'] == true ? '自动' : '手动' ;
     ret = '';
     ret += `时间戳: ${d1["sendTime"]} `;
-    ret += `防护区: ${d1['AREA']} 控制状态: ${autostatus} <br>`;
-    ret += `警报数量:${d1['JBnum']} 故障数量:${d1['GZnum']} 探测器数量:${d1['Fnum']} 灭火器数量: ${dic[5].length} <br>`;
-    ret += `喷洒状态:${d3['rain'] == true ? '正在喷洒' : '未喷洒'} <br>`;
-    ret += `温度: ${d4['oc']}摄氏度 CO: ${d4['co']}% VOC: ${d4['voc']}g/L 烟雾:${d4['fog']}mg/立方米 <br>`;
+    ret += `防护区: ${d1['AREA']} 控制状态: ${autostatus}`;
+    if(hasbr) ret += allowbr ? '<br>' : '\n';
+    ret += `警报数量:${d1['JBnum']} 故障数量:${d1['GZnum']} 探测器数量:${d1['Fnum']} 灭火器数量: ${dic[5].length} `;
+    if(hasbr) ret += allowbr ? '<br>' : '\n';
+    ret += `喷洒状态:${d3['rain'] == true ? '正在喷洒' : '未喷洒'} `;
+    if(hasbr) ret += allowbr ? '<br>' : '\n';
+    ret += `温度: ${d4['oc']}摄氏度 CO: ${d4['co']}% VOC: ${d4['voc']}g/L 烟雾:${d4['fog']}mg/立方米 `;
+    ret += allowbr ? '<br>' : '\n';
     ret += '故障设备:'
     lst = [];
     if(dic[2].length == 0){
@@ -107,18 +111,104 @@ function parse_Data(dic){
     }else{
         for(var i=0; i<dic[2].length; i++){
             if(dic[2][i]['id'] == '201'){
-                ret += '<br>温度探测器' + dic[2][i]['id'];
+                if(hasbr) ret += allowbr ? '<br>' : '\n';
+                ret += '温度探测器' + dic[2][i]['id'];
             }else if(dic[2][i]['id'] == '202'){
-                ret += '<br>CO探测器' + dic[2][i]['id'];
+                if(hasbr) ret += allowbr ? '<br>' : '\n';
+                ret += 'CO探测器' + dic[2][i]['id'];
             }else if(dic[2][i]['id'] == '203'){
-                ret += '<br>VOC探测器' + dic[2][i]['id'];
+                if(hasbr) ret += allowbr ? '<br>' : '\n';
+                ret += 'VOC探测器' + dic[2][i]['id'];
             }else if(dic[2][i]['id'] == '204'){
-                ret += '<br>烟雾探测器' + dic[2][i]['id'];
+                if(hasbr) ret += allowbr ? '<br>' : '\n';
+                ret += '烟雾探测器' + dic[2][i]['id'];
             }else{
-                ret += '<br>灭火器' + dic[2][i]['id'];
+                if(hasbr) ret += allowbr ? '<br>' : '\n';
+                ret += '灭火器' + dic[2][i]['id'];
             }
             
         }
     }
     return ret
+}
+
+function __init__(){
+    document.getElementById('bt1').onclick = () => {
+        area = document.getElementById('area1').value;
+        datas = {
+            'datelow' : document.getElementById('datelow1').value,
+            'hourlow' : document.getElementById('hourlow1').value,
+            'minlow' : document.getElementById('minlow1').value,
+            'datehigh' : document.getElementById('datehigh1').value,
+            'hourhigh' : document.getElementById('hourhigh1').value,
+            'minhigh' : document.getElementById('minhigh1').value,
+            'area' : area,
+        }
+        sendd(datas, area);
+    }
+    document.getElementById('bt2').onclick = () => {
+        area = document.getElementById('area2').value;
+        datas = {
+            'datelow' : document.getElementById('datelow2').value,
+            'hourlow' : document.getElementById('hourlow2').value,
+            'minlow' : document.getElementById('minlow2').value,
+            'datehigh' : document.getElementById('datehigh2').value,
+            'hourhigh' : document.getElementById('hourhigh2').value,
+            'minhigh' : document.getElementById('minhigh2').value,
+            'area' : area,
+        }
+        sendd(datas, area);
+    }
+    document.getElementById('bt3').onclick = () => {
+        area = document.getElementById('area3').value;
+        datas = {
+            'datelow' : document.getElementById('datelow3').value,
+            'hourlow' : document.getElementById('hourlow3').value,
+            'minlow' : document.getElementById('minlow3').value,
+            'datehigh' : document.getElementById('datehigh3').value,
+            'hourhigh' : document.getElementById('hourhigh3').value,
+            'minhigh' : document.getElementById('minhigh3').value,
+            'area' : area,
+        }
+        sendd(datas, area);
+    }
+
+
+}
+
+function sendd(datas, area){
+    xxhr = new XMLHttpRequest();
+    xxhr.open('POST', config.dir_his);
+
+    xxhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xxhr.setRequestHeader('name', 'xf_window');
+    xxhr.setRequestHeader('data', JSON.stringify(datas));
+
+    xxhr.send();
+    console.log('send -his:' + ' -area:' + area);
+    xxhr.onreadystatechange = function(){
+        if(xxhr.readyState === 4){
+            if((xxhr.status >= 200 && xxhr.status < 300) || xxhr.status == 304){
+                //console.log(xhr.getAllResponseHeaders());
+                console.log('start');
+                data = xxhr.getAllResponseHeaders();
+                //data = JSON.parse(data);
+                //console.log('1', data);
+                //console.log(typeof data);
+                data = data.split('jsjzhsjSEP');
+                //console.log(s);
+                data = JSON.parse(data[1]);
+                //console.log(data);
+                //p = document.getElementById('pp' + data['id']);
+                //console.log(p);
+                ret = '\n'
+                for(var k = 0; k<data.length; k++){
+                    ret += parse_Data(data[k], false, false);
+                    ret += '\n\n'
+                }
+                //console.log(ret);
+                document.getElementById('his').value = ret;
+            }
+        }
+    }
 }
