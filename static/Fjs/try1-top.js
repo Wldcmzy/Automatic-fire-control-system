@@ -93,14 +93,32 @@ function parse_Data(dic, hasbr = true, allowbr = true){
     d1 = dic[1][0];
     d3 = dic[3][0];
     d4 = dic[4][0];
+    d5 = dic[5];
+    var FE = {
+        values : []
+    };
+    var F ={
+        values : []
+    };
+    for(var i = 0; i<d5.length; i ++){
+        var id = d5[i]['id'];
+        // console.log(id);
+        // console.log(FE);
+        if(FE.values.indexOf(id) == -1){
+            FE.values.push(id);
+        }
+    }
+    var shutdown = d3['shutdown'] == true ? "关机" : "运行";
     var autostatus = d3['auto'] == true ? '自动' : '手动' ;
-    ret = '';
+    ret = `状态: ${shutdown} `
+    if(hasbr) ret += allowbr ? '<br>' : '\n';
     ret += `时间戳: ${d1["sendTime"]} `;
     ret += `防护区: ${d1['AREA']} 控制状态: ${autostatus}`;
     if(hasbr) ret += allowbr ? '<br>' : '\n';
-    ret += `警报数量:${d1['JBnum']} 故障数量:${d1['GZnum']} 探测器数量:${d1['Fnum']} 灭火器数量: ${dic[5].length} `;
+    ret += `警报数量:${d1['JBnum']} 故障数量:${d1['GZnum']} 探测器数量:${d1['Fnum']} 灭火器数量: ${FE.values.length} `;
     if(hasbr) ret += allowbr ? '<br>' : '\n';
     ret += `喷洒状态:${d3['rain'] == true ? '正在喷洒' : '未喷洒'} `;
+    ret += `警报等级:${d3['JBlevel']} `
     if(hasbr) ret += allowbr ? '<br>' : '\n';
     ret += `温度: ${d4['oc']}摄氏度 CO: ${d4['co']}% VOC: ${d4['voc']}g/L 烟雾:${d4['fog']}mg/立方米 `;
     ret += allowbr ? '<br>' : '\n';
@@ -111,20 +129,37 @@ function parse_Data(dic, hasbr = true, allowbr = true){
     }else{
         for(var i=0; i<dic[2].length; i++){
             if(dic[2][i]['id'] == '201'){
-                if(hasbr) ret += allowbr ? '<br>' : '\n';
-                ret += '温度探测器' + dic[2][i]['id'];
+                if(F.values.indexOf(dic[2][i]['id']) == -1){
+                    if(hasbr) ret += allowbr ? '<br>' : '\n';
+                    ret += ' 温度探测器' + dic[2][i]['id'];
+                    F.values.push(dic[2][i]['id'])
+                }
             }else if(dic[2][i]['id'] == '202'){
-                if(hasbr) ret += allowbr ? '<br>' : '\n';
-                ret += 'CO探测器' + dic[2][i]['id'];
+                if(F.values.indexOf(dic[2][i]['id']) == -1){
+                    if(hasbr) ret += allowbr ? '<br>' : '\n';
+                    ret += ' CO探测器' + dic[2][i]['id'];
+                    F.values.push(dic[2][i]['id'])
+                }
             }else if(dic[2][i]['id'] == '203'){
-                if(hasbr) ret += allowbr ? '<br>' : '\n';
-                ret += 'VOC探测器' + dic[2][i]['id'];
+                if(F.values.indexOf(dic[2][i]['id']) == -1){
+                    if(hasbr) ret += allowbr ? '<br>' : '\n';
+                    ret += ' VOC探测器' + dic[2][i]['id'];
+                    F.values.push(dic[2][i]['id'])
+                }
             }else if(dic[2][i]['id'] == '204'){
-                if(hasbr) ret += allowbr ? '<br>' : '\n';
-                ret += '烟雾探测器' + dic[2][i]['id'];
+                if(F.values.indexOf(dic[2][i]['id']) == -1){
+                    if(hasbr) ret += allowbr ? '<br>' : '\n';
+                    ret += ' 烟雾探测器' + dic[2][i]['id'];
+                    F.values.push(dic[2][i]['id'])
+                }
             }else{
-                if(hasbr) ret += allowbr ? '<br>' : '\n';
-                ret += '灭火器' + dic[2][i]['id'];
+                var id = dic[2][i]['id'];
+                var idx = FE.values.indexOf(id);
+                if(idx >= 0){
+                    if(hasbr) ret += allowbr ? '<br>' : '\n';
+                    ret += ' 灭火器' + id;
+                    FE.values.splice(idx, 1);
+                }
             }
             
         }

@@ -201,7 +201,7 @@ function __init__(){
     document.getElementById('shutdown').onclick = () => {
         if(xf.shutdown == false) {
             FE_changeAll(0);
-            sendInfo(shutdown = true, start = false)
+            sendInfo(shutdown = true, start = false, startRain = false);
             xf.shutdown = true;
             document.getElementById('working').innerHTML = '否'
         }
@@ -210,7 +210,7 @@ function __init__(){
         if(xf.shutdown == true) {
             xf.shutdown = false;
             setJBlevel(true);
-            sendInfo(shutdown = false, start = true);
+            sendInfo(shutdown = false, start = true, startRain = false);
             document.getElementById('working').innerHTML = '是'
         }
     }

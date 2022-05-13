@@ -39,6 +39,7 @@ while True:
     if data != None:
         data, address = data
         data = df.parseReport(data)
+        #print(data)
         data, dic = data
         print('接收到消息 Fcode:%#X ID:%d Time:%d' % (dic['Fcode'], dic['id'], dic['time']))
         if data == dataformer.DataFormer._ReportError_unkn:

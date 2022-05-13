@@ -41,17 +41,24 @@ def newest():
 
 @app.route('/history', methods = ['POST'])
 def history():
-    data = json.loads(request.headers['data'])
-    area = data['area']
-    timelow, timehigh = int(data['datelow']), int(data['datehigh'])
-    timelow, timehigh = timelow * 100 + int(data['hourlow']), timehigh * 100 + int(data['hourhigh'])
-    timelow, timehigh = timelow * 100 + int(data['minlow']), timehigh * 100 + int(data['minhigh'])
-    timelow *= 100
-    timehigh *= 100
+    tmerr = False
     op = databaseOperator.sqlOperator(host, user, psd, db)
     op.active()
+    try:
+        data = json.loads(request.headers['data'])
+        area = data['area']
+        timelow, timehigh = int(data['datelow']), int(data['datehigh'])
+        timelow, timehigh = timelow * 100 + int(data['hourlow']), timehigh * 100 + int(data['hourhigh'])
+        timelow, timehigh = timelow * 100 + int(data['minlow']), timehigh * 100 + int(data['minhigh'])
+        timelow *= 100
+        timehigh *= 100
+    except:
+        tmerr = True
     try :
-        ret = op.select_span(area, timelow, timehigh)
+        if tmerr == False:
+            ret = op.select_span(area, timelow, timehigh)
+        else: 
+            ret = [dict({'error': 'Time input is wrong, maybe.'} )]
     except:
         ret = [dict({'error': 'error, no area:%d maybe.' % int(area)} )]
     #print(ret)

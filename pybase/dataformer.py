@@ -84,7 +84,7 @@ class DataFormer:
             err = ord(data[6])
             if err == 0x7f:
                 errType = ord(data[7])
-                print(errType, err, Fcode)
+                #print(errType, err, Fcode)
                 if errType == 0x11:
                     return (Fcode, DataFormer._ReportError_func)
                 else:
@@ -104,11 +104,11 @@ class DataFormer:
         tail = data[-1]
         leng = self.SBit16toNum(data[2 : 4])
         if crc_now != crc:
-            return DataFormer._ReportError_crce
+            ret =  DataFormer._ReportError_crce
         elif Fcode not in DataFormer._Fcodes:
-            return DataFormer._ReportError_func
+            ret =  DataFormer._ReportError_func
         elif head != 'QN' or tail != 'E' or leng != len(data):
-            return DataFormer._ReportError_unkn
+            ret =  DataFormer._ReportError_unkn
         else:
             info = data[8 : -2]
             if Fcode == 0x60:
@@ -121,7 +121,8 @@ class DataFormer:
                 ret = self.parseReport04(info)
             elif Fcode == 0xa0:
                 ret = self.parseReport05(info)
-        return (ret, {'Fcode' : Fcode, 'id' : id, 'time' : tm})
+        ret = (ret, {'Fcode' : Fcode, 'id' : id, 'time' : tm})
+        return ret
 
     # 生成回复报文
     def formReplay(self, Fcode, id, err, val):
@@ -224,8 +225,8 @@ class DataFormer:
     def parseReport05(self, data):
         ret = []
         try:
-            if data[0] != chr(0xa0): return self._ReportError_func
-            if data[1] != chr(0x00): return self._ReportError_read
+            if data[0] != chr(0xa0): return DataFormer._ReportError_func
+            if data[1] != chr(0x00): return DataFormer._ReportError_read
             now = 4
             for i in range(ord(data[3])):
                 tmp, dic = data[now : now + 6], {}
@@ -274,8 +275,8 @@ class DataFormer:
     def parseReport04(self, data):
         ret = {}
         try:
-            if data[0] != chr(0x90): return self._ReportError_func
-            if data[1] != chr(0x00): return self._ReportError_read
+            if data[0] != chr(0x90): return DataFormer._ReportError_func
+            if data[1] != chr(0x00): return DataFormer._ReportError_read
             now = 3
             ret['length'] = ord(data[now])
             now += 1
@@ -299,7 +300,7 @@ class DataFormer:
             # 预留
         except Exception as e:
             #print(e)
-            ret = self._ReportError_unkn
+            ret = DataFormer._ReportError_unkn
         return ret
 
     def formReport03(self):
@@ -352,8 +353,8 @@ class DataFormer:
     def parseReport03(self, data):
         ret = {}
         try:
-            if data[0] != chr(0x80): return self._ReportError_func
-            if data[1] != chr(0x00): return self._ReportError_read
+            if data[0] != chr(0x80): return DataFormer._ReportError_func
+            if data[1] != chr(0x00): return DataFormer._ReportError_read
             now = 3
             ret['length'] = ord(data[now])
             now += 1
@@ -369,9 +370,9 @@ class DataFormer:
             now += 2
             ret['auto'] = self.SBit16toNum(data[now : now + 2])
             now += 2
-            ret['shutdown'] = self.SBit16toNum(data[now : now + 2])
-            now += 2
             ret['start'] = self.SBit16toNum(data[now : now + 2])
+            now += 2
+            ret['shutdown'] = self.SBit16toNum(data[now : now + 2])
             now += 2
             # 启动控制
             now += 2
@@ -384,7 +385,7 @@ class DataFormer:
 
         except Exception as e:
             #print(e)
-            ret = self._ReportError_unkn
+            ret = DataFormer._ReportError_unkn
         return ret
 
     def formReport02(self):
@@ -421,14 +422,14 @@ class DataFormer:
 
         except Exception as e:
             #print(e)
-            ret = self._report02fail
+            ret = DataFormer._report02fail
         return ret
 
     def parseReport02(self, data):
         ret = {}
         try:
-            if data[0] != chr(0x70): return self._ReportError_func
-            if data[1] != chr(0x00): return self._ReportError_read
+            if data[0] != chr(0x70): return DataFormer._ReportError_func
+            if data[1] != chr(0x00): return DataFormer._ReportError_read
             now = 3
             ret['length'] = ord(data[now])
             now += 1
@@ -452,7 +453,7 @@ class DataFormer:
 
         except Exception as e:
             #print(e)
-            ret = self._ReportError_unkn
+            ret = DataFormer._ReportError_unkn
         return ret
 
     def formReport01(self):
@@ -486,14 +487,14 @@ class DataFormer:
         
         except Exception as e:
             #print(e)
-            ret = self._report01fail
+            ret = DataFormer._report01fail
         return ret
 
     def parseReport01(self, data):
         ret = {}
         try :
-            if data[0] != chr(0x70): return self._ReportError_func
-            if data[1] != chr(0x00): return self._ReportError_read
+            if data[0] != chr(0x70): return DataFormer._ReportError_func
+            if data[1] != chr(0x00): return DataFormer._ReportError_read
             now = 3
             ret['length'] = ord(data[now])
             now += 1
@@ -506,5 +507,5 @@ class DataFormer:
             ret['FeelerNum'] = self.SBit16toNum(data[now : now + 2])
         except Exception as e:
             #print(e)
-            ret = self._ReportError_unkn
+            ret = DataFormer._ReportError_unkn
         return ret
