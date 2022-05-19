@@ -1,5 +1,4 @@
-from glob import glob
-from flask import Flask, request, make_response, render_template
+from flask import Flask, request, make_response
 from flask_cors import CORS
 from pybase import dataSR
 from pybase import dataformer

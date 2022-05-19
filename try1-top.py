@@ -2,11 +2,13 @@ from pybase import dataSR
 from pybase import dataformer
 from pybase import databaseOperator
 import time
+import cfg
 
-host = '127.0.0.1'
-user = 'ks1'
-psd = '1sk'
-db = 'KS1'
+
+host = cfg.Ghost
+user = cfg.Guser
+psd = cfg.Gpsd
+db = cfg.Gdb
 
 op = databaseOperator.sqlOperator(host, user, psd, db)
 op.active()

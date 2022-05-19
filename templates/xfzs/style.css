@@ -1,0 +1,21 @@
+h1 {
+	text-align: center;
+	font-family: "宋体";
+	font-size: 20pt;
+	color: yellow;
+	background-color:red ;
+}
+.utime{
+	text-align: left;
+	width: 400px;
+	margin: 0 auto;
+	margin-top: 200px;
+	font-size: 20px;
+}
+.lis{border:none;}
+.posi{height:30px;color:#333;}
+h6{ background-color:#d20003; color:#fff;font:22px/30px "宋体","20pt";padding:5px 10px; margin-top:20px;}
+#part-con .source{font:12px/24px "微软雅黑";color :#7e7e7e;text-align:center;border-bottom:1px solid #d8d8d8;padding-bottom:15px;}
+#part-con .edit{text-align:right;font-size:12px;color:#444;}
+.b1111{border:1px solid #3a9ebd;}
+#zt{ margin:0 auto; width:1000px;}

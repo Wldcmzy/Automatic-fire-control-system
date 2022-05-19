@@ -57,11 +57,11 @@ create table fe05(
 );
 
 
-grant all privileges on table sys01 to ks1@'%';
-grant all privileges on table gz02 to ks1@'%';
-grant all privileges on table fq03 to ks1@'%';
-grant all privileges on table f04 to ks1@'%';
-grant all privileges on table fe05 to ks1@'%';
+grant all privileges on table sys01 to ks1@'localhost';
+grant all privileges on table gz02 to ks1@'localhost';
+grant all privileges on table fq03 to ks1@'localhost';
+grant all privileges on table f04 to ks1@'localhost';
+grant all privileges on table fe05 to ks1@'localhost';
 
 
 

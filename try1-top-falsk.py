@@ -3,12 +3,12 @@ from flask_cors import CORS
 from pybase import databaseOperator
 import json
 import threading
+import cfg
 
-
-host = '127.0.0.1'
-user = 'ks1'
-psd = '1sk'
-db = 'KS1'
+host = cfg.Ghost
+user = cfg.Guser
+psd = cfg.Gpsd
+db = cfg.Gdb
 
 
 app = Flask(__name__)
