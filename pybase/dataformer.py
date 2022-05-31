@@ -1,6 +1,7 @@
 import json
 import time
 
+
 class DataFormer:
     _ReportError_read = '__DataFormer_report_read_error___@_'
     _ReportError_func = '__DataFormer_report_func_error___@_'

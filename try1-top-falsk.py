@@ -17,6 +17,7 @@ CORS(app, supports_credentials=True)
 
 @app.route('/newest', methods = ['POST'])
 def newest():
+    '''相应获取某区域最新数据的请求'''
     data = json.loads(request.headers['data'])
     #print(data, type(data))
     area, id = int(data['area']), int(data['id'])
@@ -41,6 +42,7 @@ def newest():
 
 @app.route('/history', methods = ['POST'])
 def history():
+    '''相应查看某区域历史记录的请求'''
     tmerr = False
     op = databaseOperator.sqlOperator(host, user, psd, db)
     op.active()

@@ -1,8 +1,9 @@
 import socket
 import threading
+from typing import Tuple
 
 class SR:
-    def __init__(self, ip = '0.0.0.0', port = 27013, sz = 2048):
+    def __init__(self, ip = '0.0.0.0', port = 27013, sz = 2048) -> None:
         self.__socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.__socket.bind((ip, port))
         self.__sz = sz
@@ -10,7 +11,8 @@ class SR:
         self.__datapool = []
         
 
-    def __t_receive(self):
+    def __t_receive(self) -> None:
+        '''接收消息, 应该放到单独的线程中'''
         while True:
             try:
                 data, address = self.__socket.recvfrom(self.__sz)
@@ -21,14 +23,20 @@ class SR:
             except:
                 break
 
-    def receive(self):
+    def receive(self) -> None:
+        '''开启消息接收的方法'''
         t = threading.Thread(target = self.__t_receive, name = 'receiver')
         t.start()
 
-    def send(self, data, address):
+    def send(self, data, address) -> None:
+        '''发送消息'''
         self.__socket.sendto(data.encode('UTF-8'), address)
 
-    def getData(self):
+    def getData(self) -> Tuple[str, Tuple[str, int]]:
+        '''
+        从消息队列中提取一条最早的数据
+        return : (msg, (ip, port))
+        '''
         #self.__lock.acquire()
         if len(self.__datapool) == 0: return None
         data = self.__datapool.pop(0)

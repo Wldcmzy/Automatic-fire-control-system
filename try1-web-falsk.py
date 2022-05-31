@@ -5,6 +5,7 @@ from pybase import dataformer
 import threading
 import time
 import json
+from typing import List
 
 # 可变配置
 active_port = 5000
@@ -25,7 +26,7 @@ rep_type_num = 5
 
 
 @app.route('//msg_srer', methods = ['GET', 'POST'])
-def msg_srer():
+def msg_srer() -> None:
     global lastErr
     if request.method in ['GET', 'POST']:
         res = make_response('ok')
@@ -38,7 +39,7 @@ def msg_srer():
         nowErr = int(time.time())
         if nowErr - lastErr > 27:
             time.sleep(1)
-            send(lastData[area], [0, 1, 2, 3, 4], True)
+            send(lastData[area], [0, 1, 2, 3, 4], True) # 参数error 为True, 表示定时手动制造错误
             lastErr = nowErr
 
         #res.headers['Access-Control-Allow-Origin'] = '*'
@@ -47,7 +48,8 @@ def msg_srer():
         
         return res
 
-def send(data, idx = [0, 1, 2, 3, 4], err = False):
+def send(data, idx : List[int] = [0, 1, 2, 3, 4], err : bool = False) -> None:
+    '''数据发送'''
     df.setDic(data)
     lst = df.formReport()
     if err == True: # 手动制造一个CRC错误
@@ -58,7 +60,9 @@ def send(data, idx = [0, 1, 2, 3, 4], err = False):
         if i < len(lst):
             sr.send(lst[i], targetAddr)
 
-def reSend():
+
+def reSend() -> None:
+    '''错误数据重传, 这个函数应在额外线程中执行'''
     erridx = []
     while True:
         data = sr.getData()
@@ -91,6 +95,7 @@ def reSend():
                     send(value, erridx, False)
                 erridx = []
 
+# 开启resend线程
 t = threading.Thread(target = reSend, name = 'resend')
 t.start()
 app.run(host = '127.0.0.1', port = active_port, threaded = True)
